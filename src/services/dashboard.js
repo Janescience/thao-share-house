@@ -45,8 +45,8 @@ class DashboardService{
                     return response;
                 })
     }
-    updatePaidAmountSendByMember(memberId){
-        return http.patch(module +`/paid/amountSend/${memberId}`,{ headers : authHeader()})
+    updatePaidAmountSendByMember(memberId,amountToday = 0,amountDebt = 0){
+        return http.patch(module +`/amountSend/paid/${memberId}/${amountToday}/${amountDebt}`,null,{ headers : authHeader()})
                 .then(response => {
                     return response;
                 })

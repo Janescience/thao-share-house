@@ -8,7 +8,7 @@ thead {
 
 tr {
   @apply max-w-full block relative border-b-4 border-gray-100 
-    lg:table-row lg:border-b-0  dark:border-gray-800 ;
+    lg:table-row  dark:border-gray-800 ;
 }
 
 tr:last-child {
@@ -20,7 +20,7 @@ td:not(:first-child) {
 }
 
 th {
-  @apply lg:text-left lg:p-3;
+  @apply lg:text-left lg:p-3 ;
 }
 
 td {
