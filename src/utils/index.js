@@ -140,3 +140,26 @@
       console.log(">>>> src/utils/index.js : setCountMember -> error", error)
     }
   }
+
+  export const getCountGroup = () => {
+    let count = 0;
+    try {
+        count = localStorage.getItem('countGroup') != null ? localStorage.getItem('countGroup') : 0;
+    } catch (error) {
+        console.log(">>>> src/utils/index.js : getCountGroup -> error", error)
+        count = 0;
+    }
+    return count;
+  }
+  
+  export const setCountGroup= (count) => {
+    try {
+      if (count) {
+        localStorage.setItem('countGroup',count)
+      } else {
+        localStorage.removeItem('countGroup');
+      }
+    } catch (error) {
+      console.log(">>>> src/utils/index.js : setCountGroup -> error", error)
+    }
+  }

@@ -167,7 +167,7 @@
                         <span>{{  group.payRound  + ' วัน ' }}</span>
                     </td>
                     <td data-label="งวดปัจจุบัน" class="text-center">
-                        <span>{{ !group.period  ? 'เกินวันที่จบวงแล้ว' : group.period }}</span>
+                        <span>{{ !group.period && group.status != 'N' ? 'เกินวันที่จบวงแล้ว' : group.period }}</span>
                     </td>
 
                     <td data-label="สถานะ">
@@ -192,17 +192,16 @@
                             />
                             <BaseButton
                                 v-if="group.status == 'N'"
-                                color="success"
-                                label="เลือกลูกแชร์"
-                                icon="accountMultipleCheck"
+                                color="light"
+                                label=""
+                                icon="accountMultiplePlusOutline"
                                 
                                 @click="manage(group.id)"
                             />
                             <BaseButton
-                                v-if="!group.period"
+                                v-if="!group.period && group.status != 'N'"
                                 color="danger"
                                 label=""
-                                title="จบวง"
                                 icon="homeRemoveOutline"
                                 
                                 @click="end(group.id)"

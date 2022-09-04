@@ -82,9 +82,9 @@
                             <BaseButton
                                 v-if="group.status === 'N'"
                                 color="danger"
-                                label="ลบ"
-                                icon="homeRemoveOutline"
-                                small
+                                label=""
+                                icon="trashCanOutline"
+                                
                                 @click="confirm(
                                     'ยืนยันลบวงแชร์ '+group.name+' ใช่หรือไม่ ?',
                                     group.id,
@@ -94,9 +94,9 @@
                             <BaseButton
                                 v-if="groupIsFinished(group.endDate)"
                                 color="danger"
-                                label="จบวง"
-                                icon="homeMinusOutline"
-                                small
+                                label=""
+                                icon="homeRemoveOutline"
+                                
                                 @click="confirm(
                                     'ยืนยันจบวงแชร์ '+group.name+' ใช่หรือไม่ ?',
                                     group.id,
@@ -105,9 +105,9 @@
                             />
                             <BaseButton
                                 color="warning"
-                                label="แก้ไข"
+                                label=""
                                 icon="homeEditOutline"
-                                small
+                                
                                 @click="edit(group.id)"
                             />
                         </BaseButtons>
@@ -177,6 +177,9 @@ export default {
             return getGroupStatus(status);
         },
         groupIsFinished(endDate){
+            if(!endDate){
+                return false;
+            }
             let today = new Date().setHours(0,0,0,0);
             let end = new Date(endDate).setHours(0,0,0,0);
             if(today >= end){

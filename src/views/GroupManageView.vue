@@ -11,7 +11,7 @@
         <BaseButton
           icon="chevronLeft"
           label="ย้อนกลับ"
-          color="info"
+          color="light"
           small
           @click="$router.push({ path: '/groups', replace: true })"
         />
@@ -118,6 +118,7 @@
                       <th >ยอดส่ง</th>
                       <th class="text-center">ชื่อลูกแชร์</th>
                       <th class="text-center">ค่าดูแล</th>
+                      <th class="text-center">หักท้าย</th>
                       <th >เลือก</th>
                   </tr>
               </thead>
@@ -151,7 +152,16 @@
                           @checked="careFeeChecked($event, member)"
                           data-label="ค่าดูแล"
                       />
-                      <td v-else data-label="ค่าดูแล"/>
+                      <td v-else data-label="หักท้าย"/>
+                      <td data-label="ยอดส่ง" class="lg:w-40 text-right">
+                          <FormControl
+                            v-if="group.type == 1 && (member.handNo > 1 || member.handNo == null)"
+                            icon="accountMultipleMinusOutline"
+                            placeholder="หักท้ายกี่มือ"
+                            type="number"
+                            class="w-40"
+                          />
+                      </td>
                       <TableCheckboxCell
                           v-if="!member.name && (member.handNo > 1 || member.handNo == null)"
                           :isChecked="member.checked"

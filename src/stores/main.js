@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getCurrentUser , getCountSendToday ,getCountReceiveToday , getCountBitToday , getCountDebt , getCountMember } from '@/utils'
+import { getCurrentUser , getCountSendToday ,getCountReceiveToday , getCountBitToday , getCountDebt , getCountMember , getCountGroup } from '@/utils'
 import axios from 'axios'
 
 export const useMainStore = defineStore('main', {
@@ -11,6 +11,7 @@ export const useMainStore = defineStore('main', {
     countBitToday : getCountBitToday(),
     countDebt : getCountDebt(),
     countMember : getCountMember(),
+    countGroup : getCountGroup(),
     /* Field focus with ctrl+k (to register only once) */
     isFieldFocusRegistered: false,
 
@@ -36,6 +37,9 @@ export const useMainStore = defineStore('main', {
     },
     setCountMember(count){
       this.countMember = count
+    },
+    setCountGroup(count){
+      this.countGroup = count
     },
     fetch (sampleDataKey) {
       axios

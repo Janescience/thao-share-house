@@ -48,7 +48,8 @@ export default [
     {
       to: '/groups',
       icon: 'homeVariantOutline',
-      label: 'วงแชร์'
+      label: 'วงแชร์',
+      countData : 'countGroup',
     },
   ],
   // 'รายงาน',

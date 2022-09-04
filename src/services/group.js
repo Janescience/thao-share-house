@@ -1,6 +1,7 @@
 import http from '@/constants/api';
 import authHeader from './auth-header'
-
+import { setCountGroup } from '@/utils'
+import { useMainStore } from '@/stores/main';
 class GroupService{
     createGroup(payload){
         return http.post("/group", payload ,{ headers : authHeader()});
@@ -23,6 +24,8 @@ class GroupService{
     listGroup(search){
         return http.post('/group/list',search,{ headers : authHeader()})
                 .then(response => {
+                    setCountGroup(response.data.data.length)
+                    useMainStore().setCountGroup(response.data.data.length)
                     return response;
                 })
     }

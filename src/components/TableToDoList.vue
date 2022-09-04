@@ -20,17 +20,17 @@
             {{ todo.desc }}
           </td>
           <td class="before:hidden lg:w-1 whitespace-nowrap">
-            <!-- <BaseButtons
+            <BaseButtons
               type="justify-start lg:justify-end"
               no-wrap
             >
               <BaseButton
                 color="info"
                 icon=""
-                label="รายละเอียด"
+                label="ตรวจสอบ"
               />
 
-            </BaseButtons> -->
+            </BaseButtons>
           </td>
         </tr>
       </tbody>
@@ -72,6 +72,9 @@ export default {
         }
         if(this.data.countGroupNew > 0){
           this.list.push({desc:'วงแชร์สร้างใหม่ จำนวน ' + this.data.countGroupNew + ' วง กรุณาลงลูกแชร์ให้ครบและเริ่มวง'})
+        }
+        if(this.data.countDebtNotComplete > 0){
+          this.list.push({desc:'ยอดค้างจ่าย จ่ายครบแล้วแต่ยังไม่เสร็จสิ้น จำนวน ' + this.data.countDebtNotComplete + ' คน '})
         }
       }
     },

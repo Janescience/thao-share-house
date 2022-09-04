@@ -4,6 +4,7 @@ import { setCurrentUser } from '@/utils'
 import DashboardService from '@/services/dashboard'
 import DebtService from '@/services/debt'
 import MemberService from '@/services/member'
+import GroupService from '@/services/group'
 
 
 class AuthService {
@@ -25,6 +26,7 @@ class AuthService {
                     DashboardService.getBits();
                     DebtService.getDebts();
                     MemberService.all();
+                    GroupService.listGroup();
                 }else{
                     console.log('response : ',response)    
                 }
