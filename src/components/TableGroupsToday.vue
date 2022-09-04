@@ -69,9 +69,9 @@
             >
               <BaseButton
                 color="info"
-                icon="homeSearchOutline"
+                icon=""
                 label="รายละเอียด"
-                small
+                
                 @click="$router.push({name:'group-detail',params:{id:group.id}})"
               />
 

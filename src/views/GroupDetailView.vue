@@ -109,7 +109,8 @@
                       <th class="text-center">มือที่</th>
                       <th >ลูกแชร์</th>
                       <th 
-                        class="text-center" 
+                        class="text-center"
+                        :class="[getBgActiveToday(index)]" 
                         v-for="(detail,index) in group.groupDetails" 
                         :key="detail.periodReceive" >
                           {{ getPeriod(index) }}
@@ -382,6 +383,16 @@ export default {
             }
           }
 
+        return result;
+      },
+      getBgActiveToday(numNext) {
+        let result = ""
+        const startDate = new Date(this.group.startDate).getDate()
+        let today = new Date(new Date().toDateString()).getTime();
+        let period = new Date(this.group.startDate).setDate(startDate + (numNext * parseInt(this.group.payRound)));
+        if (today == period) {
+            result = "text-teal-500"
+        }
         return result;
       },
       detailGroupAmount(detailId,subDetailId){

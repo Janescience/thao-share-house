@@ -9,10 +9,8 @@
           </h1>
         </div>
         <BaseButton
-          icon="homePlusOutline"
           label="สร้างวงแชร์"
           color="success"
-          small
           @click="modalCreate = true"
         />
       </section>
@@ -79,14 +77,14 @@
               />
             </FormField>
           </div>
-          <div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-5">
+          <!-- <div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-5">
             <FormField label="วันที่เริ่มวง">
               <Datepicker v-model="search.startDate" format="dd/MM/yyyy" dark class="shadow rounded dark:bg-gray-900"></Datepicker>
             </FormField>
             <FormField label="วันที่จบวง">
               <Datepicker v-model="search.endDate" format="dd/MM/yyyy" dark class="shadow rounded dark:bg-gray-900"></Datepicker>
             </FormField>
-          </div>
+          </div> -->
 
         
           <BaseDivider />
@@ -99,15 +97,13 @@
               type="submit"
               color="info"
               label="ค้นหา"
-              small
-              icon="magnify"
+              
             />
             <BaseButton
               type="reset"
               color="danger"
               label="ล้าง"
-              small
-              icon="refresh"
+              
             />
           </BaseButtons>
         </CardBox>
@@ -185,9 +181,9 @@
                             <BaseButton
                                 v-if="group.status == 'N'"
                                 color="danger"
-                                label="ลบ"
+                                label=""
                                 icon="trashCanOutline"
-                                small
+                                
                                 @click="confirm(
                                     'ยืนยันลบวงแชร์ '+group.name+' ใช่หรือไม่ ?',
                                     group.id,
@@ -199,31 +195,32 @@
                                 color="success"
                                 label="เลือกลูกแชร์"
                                 icon="accountMultipleCheck"
-                                small
+                                
                                 @click="manage(group.id)"
                             />
                             <BaseButton
                                 v-if="!group.period"
                                 color="danger"
-                                label="จบวง"
-                                icon="homeMinusOutline"
-                                small
+                                label=""
+                                title="จบวง"
+                                icon="homeRemoveOutline"
+                                
                                 @click="end(group.id)"
                             />
                             <BaseButton
                                 v-if="group.status == 'P'"
                                 color="warning"
-                                label="แก้ไข"
+                                label=""
                                 icon="homeEditOutline"
-                                small
+                                
                                 @click="edit(group.id)"
                             />
                             <BaseButton
                                 v-if="group.status == 'P'"
                                 color="info"
-                                label="รายละเอียด"
+                                label=""
                                 icon="homeSearchOutline"
-                                small
+                                
                                 @click="detail(group.id)"
                             />
                         </BaseButtons>

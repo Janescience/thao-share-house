@@ -29,28 +29,29 @@
             :title="'รายการลูกแชร์ ' + countChecked()"
             class="shadow-lg"
             has-table
+            header-icon=""
         >
             <div
             class="p-3 bg-gray-100/50 dark:bg-gray-800"
             >
-                <div  v-if="checkedRows.length == 0" class="grid lg:grid-cols-3 gap-3 mb-1">
+                <div  v-if="checkedRows.length == 0" class="flex mb-1">
                     <FormControl
                         v-model="addMember"
                         icon="accountSearchOutline"
-                        class="shadow-lg"
+                        class="shadow mr-2 lg:w-64"
                         
                         placeholder="กรอกชื่อเพื่อสร้างลูกแชร์"
                     />
                     <BaseButtons
-                    type="justify-center lg:justify-start"
+                    type="justify-end lg:justify-start"
                     no-wrap
                     >
                         <BaseButton
                             :disabled="addMember === ''"
                             color="success"
                             label="สร้างลูกแชร์"
-                            small
-                            icon="accountPlusOutline"
+                            
+                            icon=""
                             @click="createMember()"
                         />
                     </BaseButtons>
@@ -119,11 +120,11 @@
                         class="text-center border-b-0 lg:w-6 before:hidden"
                         @checked="checked($event, member)"
                     />
-                    <td class="border-b-0 lg:w-6 before:hidden"/>
+                    <td class="border-b-0 lg:w-10 before:hidden"/>
                     <td class="border-b-0 lg:w-6 before:hidden">
                         <UserAvatar
                         :username="member.id"
-                        class="w-18 h-18 mx-auto lg:w-12 lg:h-12"
+                        class="w-12 h-12 mx-auto lg:w-12 lg:h-12"
                         />
                     </td>
                     <td data-label="ชื่อ">
@@ -139,18 +140,18 @@
                     <td data-label="สถานะ">
                         <span> {{ member.status == "Y" ? "เล่น " + member.numberOfGroup + " วง" : "ว่าง" }} </span>
                     </td>
-                    <td class="before:hidden lg:w-6 whitespace-nowrap">
+                    <td class="lg:w-6 whitespace-nowrap">
                         <BaseButtons
-                        type="justify-start lg:justify-end"
+                        type="justify-end lg:justify-start"
                         no-wrap
                         v-if="!member.edit"
                         >
                             <BaseButton
                                 :disabled="member.status !== 'N'"
                                 color="danger"
-                                label="ลบ"
+                                label=""
                                 icon="trashCanOutline"
-                                small
+                                
                                 @click="confirm(
                                     'ยืนยันลบลูกแชร์ '+member.name+' ใช่หรือไม่ ?',
                                     member.id,
@@ -159,16 +160,16 @@
                             />
                             <BaseButton
                                 color="warning"
-                                label="แก้ไข"
-                                icon="pencilOutline"
-                                small
+                                label=""
+                                icon="accountEditOutline"
+                                
                                 @click="edit(member.id)"
                             />
                             <BaseButton
                                 color="info"
-                                label="รายละเอียด"
+                                label=""
                                 icon="accountDetailsOutline"
-                                small
+                                
                                 @click="detail(member.id)"
                             />
                         </BaseButtons>
@@ -178,17 +179,17 @@
                         v-else
                         >
                             <BaseButton
-                                color="info"
-                                label="บันทึก"
-                                icon="contentSave"
-                                small
+                                color="success"
+                                label=""
+                                icon="contentSaveOutline"
+                                
                                 @click="update(member)"
                             />
                             <BaseButton
                                 color="danger"
-                                label="ยกเลิก"
+                                label=""
                                 icon="close"
-                                small
+                                
                                 @click="cancelEdit(member)"
                             />
                             
@@ -200,19 +201,19 @@
             <div
             class="p-3 lg:px-6 border-t border-gray-100 dark:border-gray-800"
             >
-            <BaseLevel>
-                <BaseButtons>
-                <BaseButton
-                    v-for="page in pagesList"
-                    :key="page"
-                    :active="page === currentPage"
-                    :label="page + 1"
-                    small
-                    @click="currentPage = page"
-                />
-                </BaseButtons>
-                <small>Page {{ currentPageHuman }} of {{ numPages }}</small>
-            </BaseLevel>
+              <BaseLevel>
+                  <BaseButtons>
+                  <BaseButton
+                      v-for="page in pagesList"
+                      :key="page"
+                      :active="page === currentPage"
+                      :label="page + 1"
+                      small
+                      @click="currentPage = page"
+                  />
+                  </BaseButtons>
+                  <small>Page {{ currentPageHuman }} of {{ numPages }}</small>
+              </BaseLevel>
             </div>
         </CardBox>
         <CardBox v-else empty/>
@@ -361,7 +362,7 @@ export default {
               })
       },
       countChecked(){
-        return (this.checkedRows.length > 0 ? '(เลือก ' + this.checkedRows.length + ' รายการ)':'')
+        return (this.checkedRows.length > 0 ? '(เลือก ' + this.checkedRows.length + ' รายการ)':'('+ this.items.length +' รายการ)')
       },
       checked(isChecked, member){
         if (isChecked) {

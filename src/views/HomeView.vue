@@ -33,6 +33,14 @@
         
       </div>
 
+      <div class="mb-6">
+        <SectionTitleBarSub
+          icon="formatListChecks"
+          title="รายการที่ต้องทำ"
+        />
+        <TableToDoList :data="dashboard"/>
+      </div>
+      
       <SectionTitleBarSub
         icon="homeRoof"
         title="ภาพรวมวงแชร์"
@@ -42,25 +50,25 @@
           color="text-blue-600"
           icon="homeClockOutline"
           :number="dashboard?.countGroupToday"
-          label="วงแชร์วันนี้"
+          label="วันนี้"
         />
         <CardBoxWidget
           color="text-teal-500"
           icon="homeLightbulbOutline"
           :number="dashboard?.countGroupPlaying"
-          label="วงแชร์กำลังเล่น"
+          label="วงกำลังเล่น"
         />
         <CardBoxWidget
           color="text-amber-500"
           icon="homeAlertOutline"
           :number="dashboard?.countGroupExpired"
-          label="วงแชร์ที่เกินวันที่จบวงแล้ว"
+          label="เกินวันที่จบวงแล้ว"
         />
         <CardBoxWidget
           color="text-rose-500"
           icon="homeRemoveOutline"
           :number="dashboard?.countGroupFinish"
-          label="วงแชร์จบแล้ว"
+          label="จบวงแล้ว"
         />
 
       </div>
@@ -81,6 +89,7 @@
         <div class="col-span-2 ">
           <CardBoxClient
             type="danger"
+            class="mt-2"
             :name="dashboard?.sumDebtMax ? dashboard?.sumDebtMax.memberName : ''"
             subText="ลูกแชร์ที่มียอดค้างมากที่สุด"
             :amt="dashboard?.sumDebtMax ? dashboard?.sumDebtMax.sumDebt : 0"
@@ -154,6 +163,7 @@ import SectionHeroBar from '@/components/SectionHeroBar.vue'
 import CardBoxWidget from '@/components/CardBoxWidget.vue'
 import CardBox from '@/components/CardBox.vue'
 import TableGroupsToday from '@/components/TableGroupsToday.vue'
+import TableToDoList from '@/components/TableToDoList.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import CardBoxTransaction from '@/components/CardBoxTransaction.vue'
@@ -186,6 +196,7 @@ export default {
     CardBoxClient,
     SectionTitleBarSub,
     LayoutAuthenticated,
+    TableToDoList,
   },
   created(){
     this.getDashboard()

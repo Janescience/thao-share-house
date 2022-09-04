@@ -76,9 +76,9 @@
                 <th />
                 <th />
                 <th class="text-center" >ลูกแชร์</th>
-                <th class="text-center">ยอดค้างส่ง <BaseIcon :path="iconSort" @click="sort('sumAmountSend')"/></th>
-                <th class="text-center">จ่ายแล้ว <BaseIcon :path="iconSort" @click="sort('sumPaid')"/></th>
-                <th class="text-center">เหลือยอดค้างส่ง <BaseIcon :path="iconSort" @click="sort('sumDebt')"/></th>
+                <th class="text-center">ยอดค้าง </th>
+                <th class="text-center">จ่ายแล้ว </th>
+                <th class="text-center">เหลือจ่าย </th>
                 <th />
                 </tr>
             </thead>
@@ -103,50 +103,26 @@
                 <td data-label="ลูกแชร์">
                     <span >{{ member.memberName }}</span>
                 </td>
-                <td data-label="ยอดค้างส่ง" class="text-right">
+                <td data-label="ยอดค้าง" class="text-right">
                     <b class="text-blue-500 "><u>{{ formatCurrency(member.sumAmountSend) }}</u></b>
                 </td>
                 <td data-label="จ่ายแล้ว" class="text-right">
                     <b class="text-emerald-500 "><u>{{ formatCurrency(member.sumPaid) }}</u></b>
                 </td>
-                <td data-label="เหลือยอดค้างส่ง" class="text-right">
-                    <b class="text-red-500 " ><u>{{ formatCurrency(member.sumDebt) }}</u></b>
+                <td data-label="เหลือจ่าย" class="text-right">
+                    <b class="text-red-500 " ><u>{{ member.sumDebt > 0 ? formatCurrency(member.sumDebt) : 'จ่ายครบแล้ว' }}</u></b>
                 </td>
                 <td class="before:hidden lg:w-6 whitespace-nowrap">
                     <BaseButtons
-                    type="justify-start lg:justify-end"
+                    type="justify-end lg:justify-start"
                     no-wrap
                     >
+                    
                     <BaseButton
-                        v-if="member.sumDebt > 0"
-                        color="success"
-                        label="จ่ายยอดค้าง"
-                        icon="cashCheck"
-                        small
-                        @click="confirm(
-                            'ยืนยันจ่ายยอดค้างทั้งหมดของ '+member.memberName+' ใช่หรือไม่ ?',
-                            member.memberId,
-                            paid
-                        )"
-                    />
-                    <BaseButton
-                        v-else
-                        color="success"
-                        label="เสร็จสิ้น"
-                        icon="check"
-                        small
-                        @click="confirm(
-                            'ยืนยันเสร็จสิ้นรายการยอดค้างของ '+member.memberName+' ใช่หรือไม่ ?',
-                            member.memberId,
-                            complete
-                        )"
-                    />
-                    <BaseButton
-                        v-if="member.sumDebt == 0"
+                        :disabled="member.sumDebt > 0"
                         color="danger"
                         label="ยกเลิก"
-                        icon="close"
-                        small
+                        
                         @click="confirm(
                             'ยืนยันยกเลิกยอดค้างทั้งหมดของ '+member.memberName+' ใช่หรือไม่ ?',
                             member.memberId,
@@ -156,9 +132,29 @@
                     <BaseButton
                         color="info"
                         label="รายละเอียด"
-                        icon="magnify"
-                        small
                         @click="detail(member.memberId)"
+                    />
+                    <BaseButton
+                        :disabled="member.sumDebt <= 0"
+                        color="light"
+                        label="จ่าย"
+                        
+                        @click="confirm(
+                            'ยืนยันจ่ายยอดค้างทั้งหมดของ '+member.memberName+' ใช่หรือไม่ ?',
+                            member.memberId,
+                            paid
+                        )"
+                    />
+                    <BaseButton
+                        :disabled="member.sumDebt > 0"
+                        color="success"
+                        label="เสร็จสิ้น"
+                        
+                        @click="confirm(
+                            'ยืนยันเสร็จสิ้นรายการยอดค้างของ '+member.memberName+' ใช่หรือไม่ ?',
+                            member.memberId,
+                            complete
+                        )"
                     />
                     </BaseButtons>
                 </td>
@@ -323,19 +319,6 @@ export default {
           }
         })
         return newArr
-      },
-      sort(field){
-        if(this.order === ""){
-            this.order = "DESC"
-            this.iconSort = "sort-ascending"
-        }else if(this.order === "ASC"){
-            this.order = "DESC"
-            this.iconSort = "sort-ascending"
-        }else if(this.order === "DESC"){
-            this.order = "ASC"
-            this.iconSort = "sort-descending"
-        }
-        this.getDebts('',this.order,field);
       },
       confirm(text,memberId,func){
         this.textConfirm = text

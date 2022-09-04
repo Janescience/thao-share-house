@@ -28,7 +28,7 @@ class MemberService{
         return http.delete(`/member/${memberId}`,{ headers : authHeader()});
     }
     update(memberId,memberNewName){
-        return http.put(`/member?memberId=${memberId}&memberNewName=${memberNewName}`,{ headers : authHeader()});
+        return http.put(`/member?memberId=${memberId}&memberNewName=${memberNewName}`,null,{ headers : authHeader()});
     }
 }
 

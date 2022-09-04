@@ -88,7 +88,7 @@ const componentClass = computed(() => {
   ]
 
   if (props.disabled) {
-    base.push('cursor-not-allowed', props.outline ? 'opacity-50' : 'opacity-70')
+    base.push('cursor-not-allowed', props.outline ? 'opacity-40' : 'opacity-20')
   }
 
   return base
@@ -108,6 +108,7 @@ const componentClass = computed(() => {
     <BaseIcon
       v-if="icon"
       :path="icon"
+      size="18"
     />
     <span
       v-if="label"

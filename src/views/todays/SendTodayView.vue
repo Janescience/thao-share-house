@@ -123,7 +123,7 @@
                     v-model="member.sumSendPaid"
                     type="number"
                     icon="cashMultiple"
-                    class="w-28 flex-auto mr-1"
+                    class="w-28 flex-auto mr-2"
                     placeholder="จ่ายยอดส่งวันนี้"
                   />
                   <BaseButton
