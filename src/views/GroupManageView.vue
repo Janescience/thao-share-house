@@ -157,7 +157,7 @@
                           <FormControl
                             v-if="group.type == 1 && (member.handNo > 1 || member.handNo == null)"
                             icon="accountMultipleMinusOutline"
-                            placeholder="หักท้ายกี่มือ"
+                            placeholder="หักท้ายกี่งวด"
                             type="number"
                             class="w-40"
                           />
