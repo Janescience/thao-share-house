@@ -49,7 +49,7 @@
                     <span class="justify-start">ยอดส่งรวม : </span>
                     <b class="text-red-500 " ><u>{{ formatCurrency(checkedSum().sumBalance) }}</u></b>
                     </td>
-                    <td class="before:hidden lg:w-6 whitespace-nowrap">
+                    <td class="before:hidden lg:w-6 ">
                     <BaseButtons
                         type="justify-start lg:justify-end"
                         no-wrap
@@ -57,8 +57,6 @@
                         <BaseButton
                         color="success"
                         label="ส่งยอดทั้งหมด"
-                        icon="cashCheck"
-                        small
                         @click="isModalActive = true"
                         />
                     </BaseButtons>
@@ -67,154 +65,152 @@
                 </tbody>
             </table>
             </div>
-            <table>
-            <thead>
-                <tr>
-                  <th />
-                  <th />
-                  <th />
-                  <th class="text-center" colspan="3">ยอดส่งวันนี้</th>
-                  <th class="text-center" colspan="3">ยอดค้างส่ง</th>
+            <div class="overflow-x-auto ">
+              <table>
+                <thead>
+                    <tr>
+                      <th />
+                      <th />
+                      <th />
+                      <th class="text-center" colspan="3">ยอดส่งวันนี้</th>
+                      <th class="text-center" colspan="3">ยอดค้างส่ง</th>
 
-                </tr>
-                <tr >
-                    <th />
-                    <th />
-                    <th>ลูกแชร์</th>
-                    <th class="text-center">ยอดส่ง</th>
-                    <th class="text-center">จ่ายแล้ว</th>
-                    <th class="text-center">เหลือจ่าย</th>
-                    <th class="text-center">ยอดค้าง</th>
-                    <th class="text-center">จ่ายแล้ว</th>
-                    <th class="text-center">เหลือจ่าย</th>
-                    <!-- <th class="text-right">ยอดส่งรวม</th>
-                    <th class="text-right">ส่งแล้วรวม</th>
-                    <th class="text-right">เหลือส่งรวม</th> -->
-                    <th />
-                </tr>
-            </thead>
-            <tbody>
-                <tr 
-                v-for="member in itemsPaginated"
-                :key="member.memberId"
-                >
-                <TableCheckboxCell
-                    v-if="member.sumSendBalance > 0 || member.sumDebtBalance > 0"
-                    :isChecked="member.checked"
-                    class="text-center border-b-0 lg:w-6 before:hidden"
-                    @checked="checked($event, member)"
-                />
-                <td class="border-b-0 lg:w-6 " v-else />
-                <td class="border-b-0 lg:w-6 before:hidden">
-                    <UserAvatar
-                    :username="member.memberId"
-                    class="w-12 h-12 mx-auto lg:w-12 lg:h-12"
+                    </tr>
+                    <tr >
+                        <th />
+                        <th />
+                        <th >ลูกแชร์</th>
+                        <th class="text-center whitespace-nowrap">ยอดส่ง</th>
+                        <th class="text-center">จ่ายแล้ว</th>
+                        <th class="text-center">เหลือจ่าย</th>
+                        <th class="text-center whitespace-nowrap">ยอดค้าง</th>
+                        <th class="text-center">จ่ายแล้ว</th>
+                        <th class="text-center whitespace-nowrap">เหลือจ่าย</th>
+                        <!-- <th class="text-right">ยอดส่งรวม</th>
+                        <th class="text-right">ส่งแล้วรวม</th>
+                        <th class="text-right">เหลือส่งรวม</th> -->
+                        <th />
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr 
+                    v-for="member in itemsPaginated"
+                    :key="member.memberId"
+                    >
+                    <TableCheckboxCell
+                        v-if="member.sumSendBalance > 0 || member.sumDebtBalance > 0"
+                        :isChecked="member.checked"
+                        class="text-center border-b-0 lg:w-6 before:hidden"
+                        @checked="checked($event, member)"
                     />
-                </td>
-                <td data-label="ลูกแชร์">
-                    {{ member.memberName }}
-                </td>
-                <td data-label="ยอดส่ง" class="text-right">
-                    <b class="text-blue-500"><u>{{ formatCurrency(member.sumSend) }}</u></b>
-                </td>
-                <td class="flex items-center grow-0 shrink-0 " data-label="จ่ายแล้ว">
-                  
-                  <FormControl
-                    v-model="member.sumSendPaid"
-                    type="number"
-                    icon="cashMultiple"
-                    class="w-28 flex-auto mr-2"
-                    placeholder="จ่ายยอดส่งวันนี้"
-                  />
-                  <BaseButton
-                    v-if="member.sumSendPaid > 0"
-                    color="danger"
-                    icon="close"
-                    label=""
-                    class="flex-none"
-                    small
-                  />
-                </td>
-                <td data-label="เหลือจ่าย" class="text-right">
-                    <b ><u>{{ member.sumSendBalance > 0 ? formatCurrency(member.sumSendBalance) : 'จ่ายครบแล้ว' }}</u></b>
-                </td>
-                <td data-label="ยอดค้างส่ง" class="text-right" v-if="member.sumDebt > 0">
-                    <b class="text-orange-500"><u>{{ formatCurrency(member.sumDebt) }}</u></b>
-                </td>
-                <td colspan="3" v-else class="border-b-0 lg:w-6 " data-label="จ่ายยอดค้างส่ง" >ไม่มียอดค้าง</td>
-                <td class="border-b-0 lg:w-6 " data-label="จ่ายแล้ว" v-if="member.sumDebt > 0">
-                  <FormControl
-                    v-model="member.sumDebtPaid"
-                    type="number"
-                    icon="cashMultiple"
-                    class="w-44"
-                    placeholder="จ่ายยอดค้างส่ง"
-                  />
-                </td>
-                <td data-label="เหลือจ่าย" class="text-right" v-if="member.sumDebt > 0">
-                    <b ><u>{{ member.sumDebtBalance > 0 ? formatCurrency(member.sumDebtBalance) : 'จ่ายครบแล้ว' }}</u></b>
-                </td>
-                <!-- <td data-label="ยอดส่งรวม" class="text-right whitespace-nowrap">
-                    <b ><u>{{ formatCurrency(member.sumSend + member.sumDebt) }}</u></b>
-                </td>
-                <td data-label="ส่งแล้วรวม" class="text-right">
-                    <b class="text-teal-500 "><u>{{ formatCurrency((member.sumSend - member.sumSendBalance) + (member.sumDebt - member.sumDebtBalance)) }}</u></b>
-                </td>
-                <td data-label="เหลือส่งรวม" class="text-right">
-                    <b class="text-rose-500 " ><u>{{ formatCurrency(member.sumSendBalance + member.sumDebtBalance) }}</u></b>
-                </td> -->
-                <td class=" lg:w-1 whitespace-nowrap">
-                    <BaseButtons
-                    v-if="!member.sumSendPaid && !member.sumDebtPaid "
-                    type="justify-end lg:justify-start"
-                    no-wrap
-                    >
-                      <BaseButton
-                          color="info"
-                          icon="accountSearchOutline"
-                          label="รายละเอียด"
-                          small
-                          @click="isModalActive = true"
-                      />
-                      <!-- <BaseButton
-                          color="success"
-                          icon="cashCheck"
-                          label="ส่งยอด"
-                          small
-                          @click="confirm('ยืนยันส่งยอดทั้งหมด ใช่หรือไม่ ?',member.memberId,paid)"
-                      /> -->
-                    </BaseButtons>
-                    <BaseButtons
-                    v-else
-                    type="justify-end lg:justify-start"
-                    no-wrap
-                    >
-
-                      <BaseButton
-                          :disabled="member.sumSendPaid > member.sumSend || member.sumDebtPaid > member.sumDebt"
-                          color="success"
-                          icon="contentSaveOutline"
-                          label="บันทีก"
-                          small
-                          @click="paidPartial(member)"
-                      />
+                    <td class="border-b-0 lg:w-6 " v-else />
+                    <td class="border-b-0 lg:w-6 before:hidden">
+                        <UserAvatar
+                        :username="member.memberId"
+                        class="w-12 h-12 mx-auto lg:w-12 lg:h-12"
+                        />
+                    </td>
+                    <td data-label="ลูกแชร์" class="whitespace-nowrap">
+                        {{ member.memberName }}
+                    </td>
+                    <td data-label="ยอดส่ง" class="text-right whitespace-nowrap">
+                        <b class="text-blue-500"><u>{{ formatCurrency(member.sumSend) }}</u></b>
+                    </td>
+                    <td class="flex items-center grow-0 shrink-0 whitespace-nowrap" data-label="จ่ายแล้ว">
                       
-                    </BaseButtons>
-                </td>
-                </tr>
-            </tbody>
-            <tfoot>
-              <tr >
-                <td colspan="2">ยอดรวม</td>
-                <td colspan="2" class="text-right" data-label="รวมยอดส่งวันนี้"><b class="text-blue-500">{{ formatCurrency(sum().sumSend) }}</b></td>
-                <td  class="text-right" data-label="รวมจ่ายแล้ว"><b class="text-teal-500">{{ formatCurrency(sum().sumSendPaid) }}</b></td>
-                <td  class="text-right" data-label="รวมเหลือจ่าย"><b class="text-rose-500">{{ formatCurrency(sum().sumSendBalance) }}</b></td>
-                <td  class="text-right" data-label="รวมยอดค้างส่ง"><b class="text-orange-500">{{ formatCurrency(sum().sumDebt) }}</b></td>
-                <td  class="text-right" data-label="รวมจ่ายแล้ว"><b class="text-teal-500">{{ formatCurrency(sum().sumDebtPaid) }}</b></td>
-                <td class="text-right" data-label="รวมเหลือจ่าย"> <b class="text-rose-500">{{formatCurrency(sum().sumDebtBalance)}}</b></td>
-              </tr>
-            </tfoot>
-            </table>
+                      <FormControl
+                        v-model="member.sumSendPaid"
+                        type="number"
+                        icon="cashMultiple"
+                        class="lg:w-28 w-40 lg:flex-auto mr-2"
+                        placeholder="จ่ายยอดส่งวันนี้"
+                      />
+                      <BaseButton
+                        v-if="member.sumSend - member.sumSendBalance > 0"
+                        color="danger"
+                        icon="close"
+                        label=""
+                        class="flex-none"
+                        small
+                      />
+                    </td>
+                    <td data-label="เหลือจ่าย" class="text-right whitespace-nowrap">
+                        <b ><u>{{ member.sumSendBalance > 0 ? formatCurrency(member.sumSendBalance) : 'จ่ายครบแล้ว' }}</u></b>
+                    </td>
+                    <td data-label="ยอดค้างส่ง" class="text-right whitespace-nowrap" v-if="member.sumDebt > 0">
+                        <b class="text-orange-500"><u>{{ formatCurrency(member.sumDebt) }}</u></b>
+                    </td>
+                    <td colspan="3" v-else class="border-b-0 lg:w-6 text-center" data-label="จ่ายยอดค้างส่ง" >ไม่มียอดค้าง</td>
+                    <td class="flex items-center grow-0 shrink-0" data-label="จ่ายแล้ว" v-if="member.sumDebt > 0">
+                        <FormControl
+                          v-model="member.sumDebtPaid"
+                          type="number"
+                          icon="cashMultiple"
+                          class="lg:w-32 w-40 lg:flex-auto mr-2 "
+                          placeholder="จ่ายยอดค้างส่ง"
+                        />
+                        <BaseButton
+                          v-if="member.sumDebt - member.sumDebtBalance > 0"
+                          color="danger"
+                          icon="close"
+                          label=""
+                          class="flex-none"
+                          small
+                        />                      
+                    </td>
+                    <td data-label="เหลือจ่าย" class="text-right whitespace-nowrap" v-if="member.sumDebt > 0">
+                        <b ><u>{{ member.sumDebtBalance > 0 ? formatCurrency(member.sumDebtBalance) : 'จ่ายครบแล้ว' }}</u></b>
+                    </td>
+                    <!-- <td data-label="ยอดส่งรวม" class="text-right whitespace-nowrap">
+                        <b ><u>{{ formatCurrency(member.sumSend + member.sumDebt) }}</u></b>
+                    </td>
+                    <td data-label="ส่งแล้วรวม" class="text-right">
+                        <b class="text-teal-500 "><u>{{ formatCurrency((member.sumSend - member.sumSendBalance) + (member.sumDebt - member.sumDebtBalance)) }}</u></b>
+                    </td>
+                    <td data-label="เหลือส่งรวม" class="text-right">
+                        <b class="text-rose-500 " ><u>{{ formatCurrency(member.sumSendBalance + member.sumDebtBalance) }}</u></b>
+                    </td> -->
+                    <td class=" lg:w-1 whitespace-nowrap">
+                        <BaseButtons
+                        type="justify-end lg:justify-start"
+                        no-wrap
+                        >
+                          <BaseButton
+                              color="info"
+                              label="รายละเอียด"
+                              @click="isModalActive = true"
+                          />
+                          <BaseButton
+                              :disabled="member.sumSendPaid > member.sumSend || member.sumDebtPaid > member.sumDebt"
+                              color="success"
+                              label="บันทีก"
+                              @click="paidPartial(member)"
+                          />
+                          <!-- <BaseButton
+                              color="success"
+                              icon="cashCheck"
+                              label="ส่งยอด"
+                              small
+                              @click="confirm('ยืนยันส่งยอดทั้งหมด ใช่หรือไม่ ?',member.memberId,paid)"
+                          /> -->
+                        </BaseButtons>
+                    </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                  <tr >
+                    <td colspan="2">ยอดรวม</td>
+                    <td colspan="2" class="text-right" data-label="รวมยอดส่งวันนี้"><b class="text-blue-500">{{ formatCurrency(sum().sumSend) }}</b></td>
+                    <td  class="text-right" data-label="รวมจ่ายแล้ว"><b class="text-teal-500">{{ formatCurrency(sum().sumSendPaid) }}</b></td>
+                    <td  class="text-right" data-label="รวมเหลือจ่าย"><b class="text-rose-500">{{ formatCurrency(sum().sumSendBalance) }}</b></td>
+                    <td  class="text-right" data-label="รวมยอดค้างส่ง"><b class="text-orange-500">{{ formatCurrency(sum().sumDebt) }}</b></td>
+                    <td  class="text-right" data-label="รวมจ่ายแล้ว"><b class="text-teal-500">{{ formatCurrency(sum().sumDebtPaid) }}</b></td>
+                    <td class="text-right" data-label="รวมเหลือจ่าย"> <b class="text-rose-500">{{formatCurrency(sum().sumDebtBalance)}}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            
             <div
             class="p-3 lg:px-6 border-t border-gray-100 dark:border-gray-800"
             >
