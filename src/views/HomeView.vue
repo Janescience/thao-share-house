@@ -33,7 +33,17 @@
         
       </div>
 
-      <div class="mb-6">
+      <CardBox
+        title="รายการสรุปยอดวันนี้ของลูกแชร์"
+        icon=""
+        header-icon=""
+        has-table
+      >
+      <TableAmountSummaryToday :items="dashboard?.amountSummaryToday"/>
+
+    </CardBox>
+
+      <div class="mb-6 mt-6">
         <SectionTitleBarSub
           icon="formatListChecks"
           title="รายการที่ต้องทำ"
@@ -110,10 +120,6 @@
         
       </div>
 
-
-
-      
-
       <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
         <div class="flex flex-col justify-between">
           <CardBoxTransaction
@@ -164,6 +170,7 @@ import CardBoxWidget from '@/components/CardBoxWidget.vue'
 import CardBox from '@/components/CardBox.vue'
 import TableGroupsToday from '@/components/TableGroupsToday.vue'
 import TableToDoList from '@/components/TableToDoList.vue'
+import TableAmountSummaryToday from '@/components/TableAmountSummaryToday.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import CardBoxTransaction from '@/components/CardBoxTransaction.vue'
@@ -197,6 +204,7 @@ export default {
     SectionTitleBarSub,
     LayoutAuthenticated,
     TableToDoList,
+    TableAmountSummaryToday,
   },
   created(){
     this.getDashboard()

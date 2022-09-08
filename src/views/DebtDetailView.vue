@@ -62,8 +62,6 @@
                         <BaseButton
                             color="success"
                             label="เคลียร์ยอดค้างทั้งหมด"
-                            icon="cashCheck"
-                            small
                             @click="isModalActive = true"
                         />
                         </BaseButtons>
@@ -75,19 +73,16 @@
             </CardBox>
         </div>
         
-
-        <div class="grid lg:grid-cols-3 mt-3">
-            <FormControl
-            v-model="searchGroup"
-            icon="homeOutline"
-            class="mb-3 shadow-lg"
-            placeholder="ค้นหาวงแชร์"
-            />
-        </div>
+        <FormControl
+          v-model="searchGroup"
+          icon="homeOutline"
+          class="mb-3 shadow mt-3 w-full lg:w-64"
+          placeholder="ค้นหาวงแชร์"
+        />
         
         <CardBox
             v-if="itemsPaginated.length > 0"
-            title="รายการวงแชร์ที่มียอดค้างส่ง"
+            title="รายการวงแชร์ที่มียอดค้าง"
             class="shadow-lg "
             has-table
             header-icon=""
@@ -104,11 +99,11 @@
                 <th>เงินต้น</th>
                 <th>จำนวนงวดที่ค้าง</th>
                 <th>จำนวนมือ</th>
-                <th>ยอดค้างส่ง</th>
+                <th>ยอดค้าง</th>
                 <th>ค่าปรับ</th>
                 <th>ค่าดูแล</th>
                 <th>จ่ายแล้ว</th>
-                <th>เหลือยอดค้างส่ง</th>
+                <th>เหลือจ่าย</th>
                 <th />
                 </tr>
             </thead>
@@ -131,42 +126,42 @@
                     class="w-10 h-10 mx-auto lg:w-10 lg:h-10"
                     />
                 </td>
-                <td data-label="วงแชร์">
+                <td data-label="วงแชร์" class="whitespace-nowrap">
                     <span >{{ group.name }}</span>
                 </td>
-                <td data-label="ประเภท" >
+                <td data-label="ประเภท" class="whitespace-nowrap">
                     {{ getType(group.type) }}
                 </td>
-                <td data-label="เงินต้น" class="text-right">
+                <td data-label="เงินต้น" class="text-right whitespace-nowrap">
                     <b ><u>{{ formatCurrency(group.amount) }}</u></b>
                 </td>
-                <td data-label="ค้างส่งยอด/งวด" >
+                <td data-label="ค้างส่งยอด/งวด" class="whitespace-nowrap">
                     {{ group.numPeriod }}
                 </td>
-                <td data-label="จำนวนมือ" >
+                <td data-label="จำนวนมือ" class="whitespace-nowrap">
                     {{ group.numHand }}
                 </td>
-                <td data-label="ยอดค้างส่ง" class="text-right">
+                <td data-label="ยอดค้าง" class="text-right whitespace-nowrap">
                     <b class="text-blue-500 " ><u>{{ formatCurrency(group.amountSend) }}</u></b>
                 </td>
-                <td data-label="ค่าปรับ" class="text-right">
+                <td data-label="ค่าปรับ" class="text-right whitespace-nowrap">
                     <b class="text-blue-500 " ><u>{{ formatCurrency(group.fine) }}</u></b>
                 </td>
-                <td data-label="ค่าดูแล" class="text-right">
+                <td data-label="ค่าดูแล" class="text-right whitespace-nowrap">
                     <b class="text-blue-500 " ><u>{{ formatCurrency(group.careFee) }}</u></b>
                 </td>
-                <td data-label="จ่ายแล้ว" class="text-right">
+                <td data-label="จ่ายแล้ว" class="text-right whitespace-nowrap lg:w-6">
                     <FormControl
-                    type="number"
-                    v-model="group.paid"
-                    class="shadow w-32"
-                    placeholder="จ่ายแล้ว"
+                      type="number"
+                      v-model="group.paid"
+                      class="shadow w-36"
+                      placeholder="จ่ายแล้ว"
                     />
                 </td>
-                <td data-label="เหลือยอดค้าง" class="text-right">
+                <td data-label="เหลือจ่าย" class="text-right">
                     <b class="text-red-500 " ><u>{{ formatCurrency((group.amountSend + group.fine + group.careFee) - group.paid) }}</u></b>
                 </td>
-                <td class="before:hidden lg:w-6 whitespace-nowrap">
+                <td class="lg:w-6 whitespace-nowrap">
                     <BaseButtons
                     type="lg:justify-start justify-end"
                     no-wrap
@@ -175,9 +170,7 @@
                         v-if="(group.amountSend + group.fine + group.careFee) - group.paid > 0 "
                         color="info"
                         label="บันทึก"
-                        icon="contentSave"
                         :disabled="group.paid == '' || (group.paid > (group.amountSend + group.fine + group.careFee))"
-                        small
                         @click="confirm(
                             'ยืนยันบันทึกรายการของ '+group.name+' ใช่หรือไม่ ?',
                             group.groupId,
@@ -188,9 +181,7 @@
                     <BaseButton
                         v-if="(group.amountSend + group.fine + group.careFee) - group.paid == 0 "
                         color="success"
-                        label="เสร็จสิ้น"
-                        icon="check"
-                        small
+                        label="เสร็จสิ้น"                        
                         @click="confirm(
                             'ยืนยันเสร็จสิ้นรายการยอดค้างของ '+group.name+' ใช่หรือไม่ ?',
                             group.id,
