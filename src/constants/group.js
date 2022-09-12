@@ -12,11 +12,11 @@ export const getGroupType = (type) => {
 export const getGroupStatus = (type) => {
     switch (type) {
         case "P":
-            return "วงกำลังเล่น";     
+            return "กำลังเล่น";     
         case "N":
-            return "วงสร้างใหม่";
+            return "สร้างใหม่";
         case "S":
-            return "วงจบแล้ว";  
+            return "จบแล้ว";  
     }
 }
 

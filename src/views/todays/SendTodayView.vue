@@ -15,17 +15,17 @@
         />
       </section>
         <CardBoxModal
-            v-model="modalConfirm"
-            title="ยืนยันอีกครั้ง"
-            button-label="ยืนยัน"
-            @confirm="funcConfirm"
-            has-cancel
+            v-model="modalAlert"
+            title="แจ้งเตือน"
+            :has-button="false"
+            class="text-xl"
             >
-            <p>{{ textConfirm }}</p>
+            <p> {{ textAlert }}</p>
         </CardBoxModal>
 
         <CardBox
-            header-icon=""
+            header-icon="contentCopy"
+            @header-icon-click="copyText"
             :title="'รายการยอดส่ง ' + countChecked()"
             v-if="itemsPaginated.length > 0"
             has-table
@@ -72,8 +72,8 @@
                       <th />
                       <th />
                       <th />
-                      <th class="text-center" colspan="3">ยอดส่งวันนี้</th>
-                      <th class="text-center" colspan="3">ยอดค้างส่ง</th>
+                      <th class="text-center " colspan="3">ยอดส่งวันนี้</th>
+                      <th class="text-center " colspan="3">ยอดค้างส่ง</th>
 
                     </tr>
                     <tr >
@@ -248,7 +248,8 @@ import UserAvatar from '@/components/UserAvatar.vue'
 import FormControl from '@/components/FormControl.vue'
 import DashboardService from '@/services/dashboard'
 import numeral from 'numeral'
-
+import copy from 'copy-to-clipboard';
+import moment from 'moment'
 
 export default {
     data(){
@@ -257,8 +258,8 @@ export default {
             currentPage : 0,
             checkedRows : [],
             items : [],
-            textConfirm : "",
-            modalConfirm : false,
+            textAlert : "",
+            modalAlert : false,
             funcConfirm : Function,
             idConfirm : null,
         }
@@ -353,6 +354,35 @@ export default {
       },
       formatCurrency(amt){
         return numeral(amt).format(0,0)
+      },
+      formatDate(date){
+        if(!date){
+          return ""
+        }
+        return moment(new Date(date)).format('DD/MM/YYYY');
+      },
+      copyText(){
+        let listSend = '';
+        let no = 1;
+        this.items.map((item) => {
+          listSend += (no++) +'. ' +item.memberName + ' = ' + 
+          (this.formatCurrency(item.sumSend + item.sumDebt)) + 
+          (item.sumSendBalance == 0 && item.sumDebtBalance == 0 ? ' ✅' : '') +
+          '\n';
+        })
+
+        copy(`
+ยอดส่งประจำวันที่ ${this.formatDate(new Date())}
+(ยอดส่ง + ยอดค้าง + ค่าดูแล + ค่าปรับ)
+===========================
+${listSend}
+        `)
+        this.modalAlert = true;
+        this.textAlert = "คัดลอกสำเร็จ"
+        setTimeout(() => {
+          this.modalAlert = false;
+          this.textAlert = ""
+        },1000)
       }
     },
     computed : {

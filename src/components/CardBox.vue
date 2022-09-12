@@ -84,7 +84,7 @@ const submit = e => {
         aria-label="more options"
         @click.prevent="headerIconClick"
       >
-        <BaseIcon :path="computedHeaderIcon" />
+        <BaseIcon :path="computedHeaderIcon" size="18"/>
       </a>
     </header>
     <div

@@ -25,6 +25,10 @@ const props = defineProps({
     default: 'Done'
   },
   hasCancel: Boolean,
+  hasButton : {
+    type : Boolean,
+    default : false
+  },
   modelValue: {
     type: [String, Number, Boolean],
     default: null
@@ -71,9 +75,9 @@ const cancel = () => confirmCancel('cancel')
         <slot />
       </div>
 
-      <BaseDivider />
+      <BaseDivider v-if="hasButton"/>
 
-      <BaseButtons>
+      <BaseButtons v-if="hasButton">
         <BaseButton
           :label="buttonLabel"
           :color="button"

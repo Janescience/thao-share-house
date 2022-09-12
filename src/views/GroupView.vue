@@ -123,10 +123,10 @@
                     <th >วงแชร์</th>
                     <th >ประเภทวง</th>
                     <th >เงินต้น</th>
-                    <th class="text-center">จำนวนมือ</th>
+                    <th class="text-center lg:w-6 whitespace-nowrap">จำนวนมือ</th>
                     <th >วันที่เริ่มวง</th>
                     <th >วันที่จบวง</th>
-                    <th class="text-center">รอบการส่งเงิน</th>
+                    <th class="text-center lg:w-6 whitespace-nowrap">รอบการส่งเงิน</th>
                     <th class="text-center">งวดปัจจุบัน</th>
                     <th >สถานะ</th>
                     <th />
@@ -171,7 +171,7 @@
                     </td>
 
                     <td data-label="สถานะ">
-                        <span>{{ getStatus(group.status,group.actionDate) }}</span>
+                        <span>{{ getStatus(group.status,group.actionDate,group.empty) }}</span>
                     </td>
                     <td class="lg:before:hidden lg:w-6 whitespace-nowrap">
                         <BaseButtons
@@ -273,6 +273,7 @@ import CreateGroupModal from '@/components/CreateGroupModal.vue'
 
 import GroupService from '@/services/group'
 import {getGroupType,getGroupStatus} from '@/constants/group'
+import _ from "lodash"
 
 import numeral from 'numeral'
 import moment from 'moment'
@@ -354,7 +355,7 @@ export default {
         let loader = this.$loading.show();
         const resp = await GroupService.listGroup(search);
         if(resp.data){
-          this.items = resp.data.data
+          this.items = _.orderBy(resp.data.data,'actionDate')
           loader.hide()
         }
       },
@@ -420,13 +421,13 @@ export default {
       getType(type){
         return getGroupType(type);
       },
-      getStatus(status,actionDate){
+      getStatus(status,actionDate,empty){
             let today = new Date().setHours(0,0,0,0);
             let actDate = new Date(actionDate).setHours(0,0,0,0);
             if(status === 'P' && (today === actDate)){
-                return 'วงวันนี้'
+                return 'วันนี้'
             }
-            return getGroupStatus(status);
+            return getGroupStatus(status) + (status === 'N' ? ' (ว่าง '+empty+' มือ)':'');
       }
     },
     components : {
