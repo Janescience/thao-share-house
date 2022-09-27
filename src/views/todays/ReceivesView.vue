@@ -12,7 +12,7 @@
       </section>
 
       <CardBoxModal v-model="modalConfirm" title="ยืนยันอีกครั้ง" button-label="ยืนยัน" @confirm="funcConfirm"
-        has-cancel>
+        has-cancel hasButton>
         <p>{{ textConfirm }}</p>
       </CardBoxModal>
 
@@ -158,55 +158,41 @@ export default {
     async getToDayAmountReceives() {
       let loader = this.$loading.show();
       const resp = await ToDaysService.getToDayAmountReceive();
-      // if (resp.data) {
-      // this.items = resp.data.data
-      this.items = [
-        {
-          "memberId": 2,
-          "memberName": "พูล",
-          "received": "N",
-          "sumAmountReceive": 8000,
-          "amountReceive": 10000,
-          "amountSend": 2000
-        },
-        {
-          "memberId": 3,
-          "memberName": "กอต",
-          "received": "N",
-          "sumAmountReceive": 19000,
-          "amountReceive": 20000,
-          "amountSend": 1000
-        }
-      ];
-      // console.log("getToDayAmountReceives : ", resp.data.data);
+      if (resp.data) {
+      this.items = resp.data.data;
+      console.log("getToDayAmountReceives : ", resp.data.data);
       loader.hide()
-      // }
+      }
     },
     getToDayAmountReceiveDetail(memberId) {
       this.idModalDetail = memberId;
       this.modalDetail = true;
     },
     async complete() {
-      // const resp = await DebtService.complete(this.idConfirm);
-      // if(resp.data){
+      const resp = await ToDaysService.setReceiveComplete(this.idConfirm);
+      if(resp.data){
+
+      }
       this.items.forEach(item => {
         if (item.memberId == this.idConfirm) {
           console.log(item)
           item.received = 'Y';
         }
       });
-      // }
+      
     },
     async cancel() {
-      // const resp = await DebtService.complete(this.idConfirm);
-      // if(resp.data){
+      const resp = await ToDaysService.setReceiveCancel(this.idConfirm);
+      if(resp.data){
+
+      }
       this.items.forEach(item => {
         if (item.memberId == this.idConfirm) {
           console.log(item)
           item.received = 'N';
         }
       });
-      // }
+      
     },
     countChecked() {
       return (this.checkedRows.length > 0 ? '(เลือก ' + this.checkedRows.length + ' รายการ)' : '')

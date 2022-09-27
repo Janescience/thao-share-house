@@ -4,30 +4,72 @@
             class="shadow-lg w-full  overflow-y-auto md:w-3/5 lg:w-1/1 z-50" header-icon="close" modal form
             @submit.prevent="" @header-icon-click="cancel">
             <div class="">
+                <CardBox v-if="items.receiveToday != null" title="รายการยอดรับ" class="shadow-lg mb-3" has-table
+                    headerIcon="">
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">วงแชร์</th>
+                                    <th class="text-center">ประเภท</th>
+                                    <th class="text-center">งวดที่</th>
+                                    <th class="text-center">ยอดรับ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" v-for="detail in items.receiveToday" :key="detail.id">
+                                    <td data-label="วงแชร์">{{ detail.groupName }}</td>
+                                    <td data-label="ประเภท">
+                                        {{getType(detail.type)}}
+                                    </td>
+                                    <td data-label="งวดที่" class="text-right">{{ detail.periodReceive }}</td>
+                                    <td data-label="ยอดรับ" class="text-right">{{ formatCurrency(detail.amount) }}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">ยอดรวม</td>
+                                    <td class="text-right" data-label="รวมยอดรับ"> <b class="">{{formatCurrency(sumAmountReceiveToDay().sumAmountReceive)}}</b>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-gray-800" />
+                </CardBox>
                 <CardBox v-if="items.sendToday != null" title="รายการยอดส่ง" class="shadow-lg mb-3" has-table
                     headerIcon="">
                     <div class="overflow-x-auto">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>วงแชร์</th>
-                                    <th>ประเภท</th>
-                                    <th>งวดที่</th>
-                                    <th>ค่าดูแล</th>
-                                    <th>ยอดส่ง</th>
+                                    <th class="text-center">วงแชร์</th>
+                                    <th class="text-center">ประเภท</th>
+                                    <th class="text-center">งวดที่</th>
+                                    <th class="text-center">ค่าดูแล</th>
+                                    <th class="text-center">ยอดส่ง</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="text-center" v-for="detail in items.sendToday" :key="detail.id">
-                                    <td data-label="วงแชร์" >{{ detail.groupName }}</td>
+                                    <td data-label="วงแชร์">{{ detail.groupName }}</td>
                                     <td data-label="ประเภท">
-                                        {{detail.type}}
+                                        {{getType(detail.type)}}
                                     </td>
-                                    <td data-label="งวดที่" >{{ detail.periodSend }}</td>
-                                    <td data-label="ค่าดูแล" >{{ detail.careFree }}</td>
-                                    <td data-label="ยอดส่ง" >{{ detail.amount }}</td>
+                                    <td data-label="งวดที่" class="text-right">{{ detail.periodSend }}</td>
+                                    <td data-label="ค่าดูแล" class="text-right">{{ formatCurrency(detail.careFree )}}</td>
+                                    <td data-label="ยอดส่ง" class="text-right">{{ formatCurrency(detail.amount )}}</td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">ยอดรวม</td>
+                                    <td class="text-right" data-label="รวมยอดส่ง"> <b class="">{{formatCurrency(sumAmountSendToDay().sumAmountCare)}}</b>
+                                    </td>
+                                    <td class="text-right" data-label="รวมยอดส่ง"> <b class="">{{formatCurrency(sumAmountSendToDay().sumAmountSend)}}</b>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-gray-800" />
@@ -39,22 +81,29 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>วงแชร์</th>
-                                    <th>ประเภท</th>
-                                    <th>จำนวนงวดที่ค้าง</th>
-                                    <th>ยอดค้าง</th>
+                                    <th class="text-center">วงแชร์</th>
+                                    <th class="text-center">ประเภท</th>
+                                    <th class="text-center">จำนวนงวดที่ค้าง</th>
+                                    <th class="text-center">ยอดค้าง</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="text-center" v-for="detail in items.debtToDay" :key="detail.id">
-                                    <td data-label="วงแชร์" >{{ detail.groupName }}</td>
+                                    <td data-label="วงแชร์">{{ detail.groupName }}</td>
                                     <td data-label="ประเภท">
-                                        {{detail.type}}
+                                        {{getType(detail.type)}}
                                     </td>
-                                    <td data-label="จำนวนงวดที่ค้าง" >{{ detail.numPeriod }}</td>
-                                    <td data-label="ยอดค้าง" >{{ sumAmountDebtToDay(detail)}}</td>
+                                    <td data-label="จำนวนงวดที่ค้าง" class="text-right">{{ detail.numPeriod }}</td>
+                                    <td data-label="ยอดค้าง" class="text-right">{{ formatCurrency((detail.amountSend + detail.careFree + detail.fine) - detail.paid)}}</td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">ยอดรวม</td>
+                                    <td class="text-right" data-label="รวมยอดค้าง"> <b class="">{{formatCurrency(sumAmountDebtToDay().sumAmountDebt)}}</b>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-gray-800" />
@@ -63,10 +112,10 @@
             </div>
             <BaseDivider />
 
-            <BaseButtons type="justify-center">
+            <!-- <BaseButtons type="justify-center">
                 <BaseButton :label="buttonLabel" color="success" type="submit" icon="checkCircleOutline" />
                 <BaseButton v-if="hasCancel" label="ยกเลิก" color="danger" icon="close" @click="cancel" />
-            </BaseButtons>
+            </BaseButtons> -->
         </CardBox>
     </OverlayLayer>
 </template>
@@ -81,6 +130,8 @@ import FormField from '@/components/FormField.vue'
 import FormControl from '@/components/FormControl.vue'
 import ToDaysService from '@/services/todays'
 import TableGroupDetail from '@/components/TableGroupDetail.vue'
+import {getGroupType,getGroupStatus} from '@/constants/group'
+import numeral from 'numeral'
 
 export default {
     data() {
@@ -88,6 +139,12 @@ export default {
             items: [],
             perPage: 10,
             currentPage: 0,
+            parameterType: [
+              { id: "", label: 'ทั้งหมด' },
+              { id: "1", label: 'ขั้นบันได' },
+              { id: "2", label: 'บิทดอกตาม' },
+              { id: "3", label: 'เรทดอกตาม' }
+            ],
         }
     },
     created() {
@@ -117,10 +174,38 @@ export default {
         formatCurrency(amt) {
             return numeral(amt).format(0, 0)
         },
-        sumAmountDebtToDay(items){
-            const sumAomunt = (items.amountSend + items.careFree + items.fine) - items.paid;
-            return sumAomunt
-        }
+        sumAmountReceiveToDay() {
+            let sumAmountReceive = 0;
+            this.items.receiveToday.map((row) => {
+                sumAmountReceive += row.amount;
+            })
+            return {
+                sumAmountReceive
+            }
+        },
+        sumAmountSendToDay() {
+            let sumAmountSend = 0;
+            let sumAmountCare = 0;
+            this.items.sendToday.map((row) => {
+                sumAmountSend += row.amount;
+                sumAmountCare += row.careFree;
+            })
+            return {
+                sumAmountSend,sumAmountCare
+            }
+        },
+        sumAmountDebtToDay() {
+            let sumAmountDebt = 0;
+            this.items.debtToDay.map((row) => {
+                sumAmountDebt += (row.amountSend + row.careFree + row.fine) - row.paid;
+            })
+            return {
+                sumAmountDebt
+            }
+        },
+        getType(type){
+        return getGroupType(type);
+      }
     },
     watch: {
         idModalDetail: function (n, o) {

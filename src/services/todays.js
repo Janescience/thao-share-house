@@ -22,6 +22,14 @@ class ToDaysService{
                     return response;
                 })
     }
+    setReceiveCancel(memberId){
+        return http.put(module + `/receiveCancel?memberId=${memberId}`,null,{ headers : authHeader()});
+                
+    }
+    setReceiveComplete(memberId){
+        return http.put(module + `/receiveComplete?memberId=${memberId}`,null,{ headers : authHeader()});
+                
+    }
 }
 
 export default new ToDaysService()
